@@ -1,6 +1,8 @@
 @import url("./normalize.css");
-#root {
-    width: 600px;
+
+.maindiv {
+    width: 800px;
+    margin: 20px;
 }
 
 hr {
@@ -10,7 +12,24 @@ hr {
     height: 1px;
 }
 
-.font {
+textarea {
+    outline: none;
+    border: 1px solid #888;
+    border-radius: 2px;
+}
+
+textarea {
+    resize: none;
+    overflow: auto;
+}
+
+textarea[readonly] {
+    border: 0;
+}
+
+a,
+span,
+textarea {
     font: normal normal 15px/20px "Courier New", Courier, monospace;
 }
 
@@ -19,6 +38,17 @@ span {
     padding: 0 5px;
     overflow: hidden;
     display: inline-block;
+}
+
+a {
+    display: block;
+    border-bottom: 1px dashed;
+    text-decoration: none;
+    padding: 0 5px;
+}
+
+a:hover {
+    border-bottom: 0;
 }
 
 .center {
@@ -37,17 +67,6 @@ span {
     overflow: hidden;
 }
 
-.a {
-    display: block;
-    border-bottom: 1px dashed;
-    text-decoration: none;
-    padding: 0 5px;
-}
-
-.a:hover {
-    border-bottom: 0px;
-}
-
 .hidden {
     display: none;
 }
@@ -62,15 +81,11 @@ span {
     overflow: hidden;
 }
 
-textarea[readonly], input[readonly] {
-    border: 0;
-}
-
 .li {
     position: relative;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 0 2px 0;
     display: block;
     clear: both;
     overflow: hidden;
@@ -80,6 +95,7 @@ textarea[readonly], input[readonly] {
     color: #295598;
     font-size: 20px;
     font-weight: bold;
+
 }
 
 .docheck {
@@ -90,17 +106,11 @@ textarea[readonly], input[readonly] {
 
 .totext {}
 
-.totext-edit {
-    border: 1px solid #888;
-    border-radius: 4px;
-}
+.todesc {}
 
-.todesc {
-    resize: none;
-    border: 1px solid #888;
-    border-radius: 4px;
+.arroadd {
+    height:30px;
 }
-
 .toadd {
     color: #295598;
     float: right;
@@ -119,23 +129,4 @@ textarea[readonly], input[readonly] {
 .torem {
     color: #D20E20;
     float: right;
-}
-
-.dotext {}
-
-.dodesc {
-    resize: none;
-    border: 1px solid #888;
-    border-radius: 4px;
-}
-
-.dorest {
-    color: #888;
-    float: right;
-}
-
-.dotitl {
-    color: #333;
-    font-size: 20px;
-    font-weight: bold;
 }
