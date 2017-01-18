@@ -1,0 +1,141 @@
+@import url("./normalize.css");
+#root {
+    width: 600px;
+}
+
+hr {
+    border: none;
+    color: #76B900;
+    background-color: #76B900;
+    height: 1px;
+}
+
+.font {
+    font: normal normal 15px/20px "Courier New", Courier, monospace;
+}
+
+span {
+    display: block;
+    padding: 0 5px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.center {
+    text-align: center;
+}
+
+.leri {
+    display: block;
+    float: left;
+    margin: 0 5px;
+}
+
+.arro {
+    position: relative;
+    clear: both;
+    overflow: hidden;
+}
+
+.a {
+    display: block;
+    border-bottom: 1px dashed;
+    text-decoration: none;
+    padding: 0 5px;
+}
+
+.a:hover {
+    border-bottom: 0px;
+}
+
+.hidden {
+    display: none;
+}
+
+.ul {
+    position: relative;
+    list-style: none;
+    margin: 20px;
+    padding: 0;
+    display: block;
+    width: auto;
+    overflow: hidden;
+}
+
+textarea[readonly], input[readonly] {
+    border: 0;
+}
+
+.li {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+    clear: both;
+    overflow: hidden;
+}
+
+.totitl {
+    color: #295598;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.docheck {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 4px;
+}
+
+.totext {}
+
+.totext-edit {
+    border: 1px solid #888;
+    border-radius: 4px;
+}
+
+.todesc {
+    resize: none;
+    border: 1px solid #888;
+    border-radius: 4px;
+}
+
+.toadd {
+    color: #295598;
+    float: right;
+}
+
+.toedit {
+    color: #37B182;
+    float: right;
+}
+
+.tosave {
+    color: #37B182;
+    float: right;
+}
+
+.torem {
+    color: #D20E20;
+    float: right;
+}
+
+.dotext {}
+
+.dodesc {
+    resize: none;
+    border: 1px solid #888;
+    border-radius: 4px;
+}
+
+.dorest {
+    color: #888;
+    float: right;
+}
+
+.dotitl {
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+}
