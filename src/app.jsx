@@ -19,7 +19,7 @@ function generateId (len) {
   window.crypto.getRandomValues(arr)
   return Array.from(arr).map(dec2hex).join('')
 }
-
+// -------------------------------------------------------------------------- //
 class ToListItem extends React.Component {
   constructor(props) {
     super(props);
@@ -40,17 +40,11 @@ class ToListItem extends React.Component {
     localStorage.setObj('todotext', this.todotextarr);
     localStorage.setObj('tododesc', this.tododescarr);
   }
-  docheckchange = () => {
-    console.log('docheckclick : id = %d', this.id);
-    this.localstorageload();
-    this.todotypearr[this.id] = -1;
-    this.localstoragesave();
-  }
-  toeditclick = () => {
+  toedit = () => {
     console.log('toeditclick : id = %d', this.id);
     this.setState({ro: false, toeh: true, tosh: false});
   }
-  tosaveclick = () => {
+  tosave = () => {
     console.log('tosaveclick : id = %d', this.id);
     this.localstorageload();
     this.todotextarr[this.id] = ReactDOM.findDOMNode(this.refs[this.todotextref]).value;
@@ -58,14 +52,22 @@ class ToListItem extends React.Component {
     this.localstoragesave();
     this.setState({ro: true, toeh: false, tosh: true});
   }
-  toremclick = () => {
+  docheck = () => {
+    console.log('docheckclick : id = %d', this.id);
+    this.localstorageload();
+    this.todotypearr[this.id] = -1;
+    this.localstoragesave();
+    return this.props.onСheck(this.id);
+  }
+  torem = () => {
     console.log('toremclick : id = %d', this.id);
     this.localstorageload();
     this.todonumarr.splice(this.id, 1);
+    this.todotypearr.splice(this.id, 1);
     this.todotextarr.splice(this.id, 1);
     this.tododescarr.splice(this.id, 1);
     this.localstoragesave();
-    localStorage.setObj('tonum', this.todonumarr);
+    return this.props.onRemove(this.id);
   }
   render() {
     this.localstorageload();
@@ -76,20 +78,21 @@ class ToListItem extends React.Component {
       this.todotypeindex==1?
       (<li className={st.li}>
           <div className={st.arro}>
-            <input type="checkbox" className={cn({[st.le]: true, [st.docheck]: true})} onChange={this.docheckchange}/>
+            <input type="checkbox" className={cn({[st.le]: true, [st.docheck]: true})} onChange={this.docheck}/>
             <textarea ref={this.todotextref} placeholder="Заголовок" className={cn({[st.le]: true, [st.totext]: true})} rows="1" readOnly={this.state.ro?this.readonly:null} defaultValue={this.todotextarr[this.id]?this.todotextarr[this.id]:''}></textarea>
-              <a href="#" className={cn({[st.ri]: true, [st.torem]: true})} onClick={this.toremclick}>Удалить</a>
-              <a href="#" className={cn({[st.ri]: true, [st.toedit]: true, [st.hidden]: this.state.toeh?true:false})} onClick={this.toeditclick}>Редактировать</a>
-              <a href="#" className={cn({[st.ri]: true, [st.tosave]: true, [st.hidden]: this.state.tosh?true:false})} onClick={this.tosaveclick}>Сохранить</a>
+            <a href="#" className={cn({[st.ri]: true, [st.torem]: true})} onClick={this.torem}>Удалить</a>
+            <a href="#" className={cn({[st.ri]: true, [st.toedit]: true, [st.hidden]: this.state.toeh?true:false})} onClick={this.toedit}>Редактировать</a>
+            <a href="#" className={cn({[st.ri]: true, [st.tosave]: true, [st.hidden]: this.state.tosh?true:false})} onClick={this.tosave}>Сохранить</a>
           </div>
           <div className={st.arro}>
-              <span className={cn({[st.ri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
-              <textarea ref={this.tododescref} placeholder="Описание" className={cn({[st.le]: true, [st.todesc]: true})} rows="2" readOnly={this.state.ro?this.readonly:null} defaultValue={this.tododescarr[this.id]?this.tododescarr[this.id]:''}></textarea>
+            <span className={cn({[st.ri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
+            <textarea ref={this.tododescref} placeholder="Описание" className={cn({[st.le]: true, [st.todesc]: true})} rows="2" readOnly={this.state.ro?this.readonly:null} defaultValue={this.tododescarr[this.id]?this.tododescarr[this.id]:''}></textarea>
           </div>
       </li>):null
     );
   }
 }
+// -------------------------------------------------------------------------- //
 class DoListItem extends React.Component {
   constructor(props) {
     super(props);
@@ -108,11 +111,13 @@ class DoListItem extends React.Component {
     localStorage.setObj('todotext', this.todotextarr);
     localStorage.setObj('tododesc', this.tododescarr);
   }
-  torestclick = () => {
+  torest = () => {
     console.log('torestclick : id = %d', this.id);
     this.localstorageload();
     this.todotypearr[this.id] = 1;
     this.localstoragesave();
+    this.forceUpdate();
+    return this.props.onRestore(this.id);
   }
   render() {
     this.localstorageload();
@@ -123,7 +128,7 @@ class DoListItem extends React.Component {
       (<li className={st.li}>
           <div className={st.arro}>
               <textarea ref={this.todotextref} placeholder="Заголовок" className={cn({[st.le]: true, [st.dotext]: true})} rows="1" readOnly="readOnly" defaultValue={this.todotextarr[this.id]?this.todotextarr[this.id]:''}></textarea>
-              <a href="#" className={cn({[st.ri]: true, [st.dorest]: true})} onClick={this.torestclick}>Восстановить</a>
+              <a href="#" className={cn({[st.ri]: true, [st.dorest]: true})} onClick={this.torest}>Восстановить</a>
           </div>
           <div className={st.arro}>
             <span className={cn({[st.ri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
@@ -132,6 +137,7 @@ class DoListItem extends React.Component {
     );
   }
 }
+// -------------------------------------------------------------------------- //
 class ToDoList extends React.Component {
   constructor(props) {
     super(props);
@@ -148,7 +154,7 @@ class ToDoList extends React.Component {
     localStorage.setObj('todotext', this.todotextarr);
     localStorage.setObj('tododesc', this.tododescarr);
   }
-  toaddclick = () => {
+  toadd = () => {
     this.localstorageload();
     console.log('toaddclick : id = %d', this.todonumarr.length);
     this.todonumarr.push(new Date().getTime());
@@ -158,10 +164,22 @@ class ToDoList extends React.Component {
     this.localstoragesave();
     this.forceUpdate();
   }
+  docheck = () => {
+    console.log('docheckclick : id = %d', this.id);
+    this.forceUpdate();
+  }
+  torem = () => {
+    console.log('toremclick : id = %d', this.id);
+    this.forceUpdate();
+  }
+  torest = () => {
+    console.log('torestclick : id = %d', this.id);
+    this.forceUpdate();
+  }
   render() {
     this.localstorageload();
-    const tolistitems = this.todonumarr.map((v_, k_) => <ToListItem key={k_} id={k_} millisec={v_}/>);
-    const dolistitems = this.todonumarr.map((v_, k_) => <DoListItem key={k_} id={k_} millisec={v_}/>);
+    const tolistitems = this.todonumarr.map((v_, k_) => <ToListItem key={k_} id={k_} millisec={v_} onСheck={this.docheck} onRemove={this.torem}/>);
+    const dolistitems = this.todonumarr.map((v_, k_) => <DoListItem key={k_} id={k_} millisec={v_} onRestore={this.torest}/>);
     return (
       <div className={st.maindiv}>
         <ul className={st.ul}>
@@ -172,7 +190,7 @@ class ToDoList extends React.Component {
           </li>
           <li className={st.li}>
             <div className={cn({[st.arro]: true, [st.arroadd]: true})}>
-              <a href="#" className={cn({[st.le]: true, [st.toadd]: true})} onClick={this.toaddclick}>Добавить</a>
+              <a href="#" className={cn({[st.le]: true, [st.toadd]: true})} onClick={this.toadd}>Добавить</a>
             </div>
           </li>
           {tolistitems}
@@ -190,39 +208,7 @@ class ToDoList extends React.Component {
     );
   }
 }
-/*
-const donum = [1, 2];
-
-function DoListItem(props) {
-    const value = props.value;
-    return (
-        <li className="li">
-            <div className="arro">
-                <input type="text" className="font le dotext" value={value} readOnly/>
-                <a href="#" className="font a le dorest">Восстановить</a>
-            </div>
-            <div className="arro">
-                <textarea className="font le dodesc" cols="5" value={value} readOnly></textarea>
-            </div>
-        </li>
-    );
-}
-
-function DoList(props) {
-    const numbers = props.numbers;
-    const listitems = numbers.map((number) => <DoListItem key={number.toString()} value={number}/>);
-    return (
-        <ul className="ul">
-            <li className="li">
-                <div className="arro center">
-                    <span className="font span dotitl">Завершённые задачи</span>
-                </div>
-            </li>
-            {listitems}
-        </ul>
-    );
-}
-*/
+// -------------------------------------------------------------------------- //
 export default class App extends React.Component {
   render() {
     return (
@@ -232,3 +218,4 @@ export default class App extends React.Component {
     )
   }
 }
+// -------------------------------------------------------------------------- //
