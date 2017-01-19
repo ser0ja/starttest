@@ -58,12 +58,18 @@ a:hover {
 .id {
     font-size: 10px;
     color: #A9A9A9;
-    margin: 0 0 -5px 25px !important
+    margin: 0 0 -5px 25px !important;
 }
 
-.leri {
+.le {
     display: block;
     float: left;
+    margin: 0 5px;
+}
+
+.ri {
+    display: block;
+    float: right;
     margin: 0 5px;
 }
 
@@ -139,5 +145,26 @@ a:hover {
 
 .torem {
     color: #D20E20;
+    float: right;
+}
+
+.dotitl {
+    color: #A9A9A9;
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.dotext {
+    width: 450px;
+}
+
+.dodesc {
+    margin: 5px 0 0 5px;
+    width: 720px;
+}
+
+.torest {
+    color: #A9A9A9;
     float: right;
 }

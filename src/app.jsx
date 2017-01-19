@@ -29,97 +29,164 @@ class ToListItem extends React.Component {
     this.state = {ro: true, toeh: false, tosh: true};
   }
   localstorageload = () => {
-    this.tonumarr = localStorage.getObj('tonum');
-    this.totextarr = localStorage.getObj('totext');
-    this.todescarr = localStorage.getObj('todesc');
+    this.todonumarr = localStorage.getObj('todonum');
+    this.todotypearr = localStorage.getObj('todotype');
+    this.todotextarr = localStorage.getObj('todotext');
+    this.tododescarr = localStorage.getObj('tododesc');
   }
   localstoragesave = () => {
-    localStorage.setObj('tonum', this.tonumarr);
-    localStorage.setObj('totext', this.totextarr);
-    localStorage.setObj('todesc', this.todescarr);
+    localStorage.setObj('todonum', this.todonumarr);
+    localStorage.setObj('todotype', this.todotypearr);
+    localStorage.setObj('todotext', this.todotextarr);
+    localStorage.setObj('tododesc', this.tododescarr);
+  }
+  docheckchange = () => {
+    console.log('docheckclick : id = %d', this.id);
+    this.localstorageload();
+    this.todotypearr[this.id] = -1;
+    this.localstoragesave();
   }
   toeditclick = () => {
+    console.log('toeditclick : id = %d', this.id);
     this.setState({ro: false, toeh: true, tosh: false});
   }
   tosaveclick = () => {
     console.log('tosaveclick : id = %d', this.id);
     this.localstorageload();
-    this.totextarr[this.id] = ReactDOM.findDOMNode(this.refs[this.totextref]).value;
-    this.todescarr[this.id] = ReactDOM.findDOMNode(this.refs[this.todescref]).value;
+    this.todotextarr[this.id] = ReactDOM.findDOMNode(this.refs[this.todotextref]).value;
+    this.tododescarr[this.id] = ReactDOM.findDOMNode(this.refs[this.tododescref]).value;
     this.localstoragesave();
     this.setState({ro: true, toeh: false, tosh: true});
   }
   toremclick = () => {
     console.log('toremclick : id = %d', this.id);
     this.localstorageload();
-    this.tonumarr.splice(this.id, 1);
-    this.totextarr.splice(this.id, 1);
-    this.todescarr.splice(this.id, 1);
+    this.todonumarr.splice(this.id, 1);
+    this.todotextarr.splice(this.id, 1);
+    this.tododescarr.splice(this.id, 1);
     this.localstoragesave();
-    localStorage.setObj('tonum', this.tonumarr);
+    localStorage.setObj('tonum', this.todonumarr);
   }
   render() {
     this.localstorageload();
-    this.totextref = "totext" + this.id;
-    this.todescref = "todesc" + this.id;
+    this.todotypeindex = this.todotypearr[this.id];
+    this.todotextref = "todotext" + this.id;
+    this.tododescref = "tododesc" + this.id;
     return (
-      <li className={st.li}>
+      this.todotypeindex==1?
+      (<li className={st.li}>
           <div className={st.arro}>
-              <input type="checkbox" className={cn({[st.leri]: true, [st.docheck]: true})}/>
-              <textarea ref={this.totextref} placeholder="Заголовок" className={cn({[st.leri]: true, [st.totext]: true})} rows="1" readOnly={this.state.ro?this.readonly:null} defaultValue={this.totextarr[this.id]?this.totextarr[this.id]:''}></textarea>
-              <a href="#" className={cn({[st.leri]: true, [st.torem]: true})} onClick={this.toremclick}>Удалить</a>
-              <a href="#" className={cn({[st.leri]: true, [st.toedit]: true, [st.hidden]: this.state.toeh?true:false})} onClick={this.toeditclick}>Редактировать</a>
-              <a href="#" className={cn({[st.leri]: true, [st.tosave]: true, [st.hidden]: this.state.tosh?true:false})} onClick={this.tosaveclick}>Сохранить</a>
+            <input type="checkbox" className={cn({[st.le]: true, [st.docheck]: true})} onChange={this.docheckchange}/>
+            <textarea ref={this.todotextref} placeholder="Заголовок" className={cn({[st.le]: true, [st.totext]: true})} rows="1" readOnly={this.state.ro?this.readonly:null} defaultValue={this.todotextarr[this.id]?this.todotextarr[this.id]:''}></textarea>
+              <a href="#" className={cn({[st.ri]: true, [st.torem]: true})} onClick={this.toremclick}>Удалить</a>
+              <a href="#" className={cn({[st.ri]: true, [st.toedit]: true, [st.hidden]: this.state.toeh?true:false})} onClick={this.toeditclick}>Редактировать</a>
+              <a href="#" className={cn({[st.ri]: true, [st.tosave]: true, [st.hidden]: this.state.tosh?true:false})} onClick={this.tosaveclick}>Сохранить</a>
           </div>
           <div className={st.arro}>
-              <span className={cn({[st.leri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
-              <textarea ref={this.todescref} placeholder="Описание" className={cn({[st.leri]: true, [st.todesc]: true})} rows="2" readOnly={this.state.ro?this.readonly:null} defaultValue={this.todescarr[this.id]?this.todescarr[this.id]:''}></textarea>
+              <span className={cn({[st.ri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
+              <textarea ref={this.tododescref} placeholder="Описание" className={cn({[st.le]: true, [st.todesc]: true})} rows="2" readOnly={this.state.ro?this.readonly:null} defaultValue={this.tododescarr[this.id]?this.tododescarr[this.id]:''}></textarea>
           </div>
-      </li>
+      </li>):null
     );
   }
 }
-
-class ToList extends React.Component {
+class DoListItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.id = props.id;
+    this.millisec = props.millisec;
+  }
+  localstorageload = () => {
+    this.todonumarr = localStorage.getObj('todonum');
+    this.todotypearr = localStorage.getObj('todotype');
+    this.todotextarr = localStorage.getObj('todotext');
+    this.tododescarr = localStorage.getObj('tododesc');
+  }
+  localstoragesave = () => {
+    localStorage.setObj('todonum', this.todonumarr);
+    localStorage.setObj('todotype', this.todotypearr);
+    localStorage.setObj('todotext', this.todotextarr);
+    localStorage.setObj('tododesc', this.tododescarr);
+  }
+  torestclick = () => {
+    console.log('torestclick : id = %d', this.id);
+    this.localstorageload();
+    this.todotypearr[this.id] = 1;
+    this.localstoragesave();
+  }
+  render() {
+    this.localstorageload();
+    this.todotypeindex = this.todotypearr[this.id];
+    this.todotextref = "todotext" + this.id;
+    return (
+      this.todotypeindex==-1?
+      (<li className={st.li}>
+          <div className={st.arro}>
+              <textarea ref={this.todotextref} placeholder="Заголовок" className={cn({[st.le]: true, [st.dotext]: true})} rows="1" readOnly="readOnly" defaultValue={this.todotextarr[this.id]?this.todotextarr[this.id]:''}></textarea>
+              <a href="#" className={cn({[st.ri]: true, [st.dorest]: true})} onClick={this.torestclick}>Восстановить</a>
+          </div>
+          <div className={st.arro}>
+            <span className={cn({[st.ri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
+          </div>
+      </li>):null
+    );
+  }
+}
+class ToDoList extends React.Component {
   constructor(props) {
     super(props);
   }
   localstorageload = () => {
-    this.tonumarr = localStorage.getObj('tonum');
-    this.totextarr = localStorage.getObj('totext');
-    this.todescarr = localStorage.getObj('todesc');
+    this.todonumarr = localStorage.getObj('todonum');
+    this.todotypearr = localStorage.getObj('todotype');
+    this.todotextarr = localStorage.getObj('todotext');
+    this.tododescarr = localStorage.getObj('tododesc');
   }
   localstoragesave = () => {
-    localStorage.setObj('tonum', this.tonumarr);
-    localStorage.setObj('totext', this.totextarr);
-    localStorage.setObj('todesc', this.todescarr);
+    localStorage.setObj('todonum', this.todonumarr);
+    localStorage.setObj('todotype', this.todotypearr);
+    localStorage.setObj('todotext', this.todotextarr);
+    localStorage.setObj('tododesc', this.tododescarr);
   }
   toaddclick = () => {
     this.localstorageload();
-    console.log('toaddclick : id = %d', this.tonumarr.length);
-    this.tonumarr.push(new Date().getTime());
-    this.totextarr.push('');
-    this.todescarr.push('');
+    console.log('toaddclick : id = %d', this.todonumarr.length);
+    this.todonumarr.push(new Date().getTime());
+    this.todotypearr.push(1);
+    this.todotextarr.push('');
+    this.tododescarr.push('');
     this.localstoragesave();
     this.forceUpdate();
   }
   render() {
     this.localstorageload();
-    const listitems = this.tonumarr.map((v_, k_) => <ToListItem key={k_} id={k_} millisec={v_}/>);
+    const tolistitems = this.todonumarr.map((v_, k_) => <ToListItem key={k_} id={k_} millisec={v_}/>);
+    const dolistitems = this.todonumarr.map((v_, k_) => <DoListItem key={k_} id={k_} millisec={v_}/>);
     return (
-      <ul className={st.ul}>
+      <div className={st.maindiv}>
+        <ul className={st.ul}>
           <li className={st.li}>
-              <div className={cn({[st.arro]: true, [st.center]: true})}>
-                  <span className={cn({[st.totitl]: true})}>Актуальные задачи</span>
-              </div>
+            <div className={cn({[st.arro]: true, [st.center]: true})}>
+              <span className={cn({[st.totitl]: true})}>Актуальные задачи</span>
+            </div>
           </li>
           <li className={st.li}>
-              <div className={cn({[st.arro]: true, [st.arroadd]: true})}>
-                  <a href="#" className={cn({[st.leri]: true, [st.toadd]: true})} onClick={this.toaddclick}>Добавить</a>
-              </div>
+            <div className={cn({[st.arro]: true, [st.arroadd]: true})}>
+              <a href="#" className={cn({[st.le]: true, [st.toadd]: true})} onClick={this.toaddclick}>Добавить</a>
+            </div>
           </li>
-          {listitems}
-      </ul>
+          {tolistitems}
+        </ul>
+        <hr/>
+        <ul className={st.ul}>
+          <li className={st.li}>
+            <div className={cn({[st.arro]: true, [st.center]: true})}>
+              <span className={cn({[st.dotitl]: true})}>Завершённые задачи</span>
+            </div>
+          </li>
+          {dolistitems}
+        </ul>
+      </div>
     );
   }
 }
@@ -131,11 +198,11 @@ function DoListItem(props) {
     return (
         <li className="li">
             <div className="arro">
-                <input type="text" className="font leri dotext" value={value} readOnly/>
-                <a href="#" className="font a leri dorest">Восстановить</a>
+                <input type="text" className="font le dotext" value={value} readOnly/>
+                <a href="#" className="font a le dorest">Восстановить</a>
             </div>
             <div className="arro">
-                <textarea className="font leri dodesc" cols="5" value={value} readOnly></textarea>
+                <textarea className="font le dodesc" cols="5" value={value} readOnly></textarea>
             </div>
         </li>
     );
@@ -160,10 +227,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-          <div className={st.maindiv}>
-            <ToList />
-            <hr />
-        </div>
+        <ToDoList />
       </div>
     )
   }
