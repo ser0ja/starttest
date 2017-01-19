@@ -14,7 +14,8 @@ hr {
 
 textarea {
     outline: none;
-    border: 1px solid #888;
+    border: 1px dashed #888;
+    background-color: #F3F3F3;
     border-radius: 2px;
 }
 
@@ -24,6 +25,7 @@ textarea {
 }
 
 textarea[readonly] {
+    background-color: transparent;
     border: 0;
 }
 
@@ -36,8 +38,6 @@ textarea {
 span {
     display: block;
     padding: 0 5px;
-    overflow: hidden;
-    display: inline-block;
 }
 
 a {
@@ -53,6 +53,12 @@ a:hover {
 
 .center {
     text-align: center;
+}
+
+.id {
+    font-size: 10px;
+    color: #A9A9A9;
+    margin: 0 0 -5px 25px !important
 }
 
 .leri {
@@ -85,7 +91,7 @@ a:hover {
     position: relative;
     list-style: none;
     margin: 0;
-    padding: 0 0 2px 0;
+    padding: 0 0 2px;
     display: block;
     clear: both;
     overflow: hidden;
@@ -95,16 +101,17 @@ a:hover {
     color: #295598;
     font-size: 20px;
     font-weight: bold;
-
 }
 
 .docheck {
     display: inline-block;
     vertical-align: middle;
-    margin-top: 4px;
+    margin-top: 5px;
 }
 
-.totext {}
+.totext {
+    width: 450px;
+}
 
 .todesc {
     margin: 5px 0 0 28px;
@@ -112,8 +119,9 @@ a:hover {
 }
 
 .arroadd {
-    height:30px;
+    height: 30px;
 }
+
 .toadd {
     color: #295598;
     float: right;

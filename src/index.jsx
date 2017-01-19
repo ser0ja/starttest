@@ -3,7 +3,9 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './app.jsx';
 
-render( <AppContainer><App/></AppContainer>, document.querySelector("#root"));
+const root = document.getElementById('root')
+
+render( <AppContainer><App/></AppContainer>, root);
 
 if (module && module.hot) {
   module.hot.accept('./app.jsx', () => {
@@ -12,7 +14,7 @@ if (module && module.hot) {
       <AppContainer>
         <App/>
       </AppContainer>,
-      document.querySelector("#root")
+      root
     );
   });
 }
