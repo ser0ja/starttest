@@ -75,8 +75,7 @@ class ToListItem extends React.Component {
     this.todotextref = "todotext" + this.id;
     this.tododescref = "tododesc" + this.id;
     return (
-      this.todotypeindex==1?
-      (<li className={st.li}>
+      <li className={st.li}>
           <div className={st.arro}>
             <input type="checkbox" className={cn({[st.le]: true, [st.docheck]: true})} onChange={this.docheck}/>
             <textarea ref={this.todotextref} placeholder="Заголовок" className={cn({[st.le]: true, [st.totext]: true})} rows="1" readOnly={this.state.ro?this.readonly:null} defaultValue={this.todotextarr[this.id]?this.todotextarr[this.id]:''}></textarea>
@@ -88,7 +87,7 @@ class ToListItem extends React.Component {
             <span className={cn({[st.ri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
             <textarea ref={this.tododescref} placeholder="Описание" className={cn({[st.le]: true, [st.todesc]: true})} rows="2" readOnly={this.state.ro?this.readonly:null} defaultValue={this.tododescarr[this.id]?this.tododescarr[this.id]:''}></textarea>
           </div>
-      </li>):null
+      </li>
     );
   }
 }
@@ -121,11 +120,9 @@ class DoListItem extends React.Component {
   }
   render() {
     this.localstorageload();
-    this.todotypeindex = this.todotypearr[this.id];
     this.todotextref = "todotext" + this.id;
     return (
-      this.todotypeindex==-1?
-      (<li className={st.li}>
+      <li className={st.li}>
           <div className={st.arro}>
               <textarea ref={this.todotextref} placeholder="Заголовок" className={cn({[st.le]: true, [st.dotext]: true})} rows="1" readOnly="readOnly" defaultValue={this.todotextarr[this.id]?this.todotextarr[this.id]:''}></textarea>
               <a href="#" className={cn({[st.ri]: true, [st.dorest]: true})} onClick={this.torest}>Восстановить</a>
@@ -133,7 +130,7 @@ class DoListItem extends React.Component {
           <div className={st.arro}>
             <span className={cn({[st.ri]: true, [st.id]: true})}>ID:{this.id}&nbsp;Time:{this.millisec}</span>
           </div>
-      </li>):null
+      </li>
     );
   }
 }
@@ -165,21 +162,18 @@ class ToDoList extends React.Component {
     this.forceUpdate();
   }
   docheck = () => {
-    console.log('docheckclick : id = %d', this.id);
     this.forceUpdate();
   }
   torem = () => {
-    console.log('toremclick : id = %d', this.id);
     this.forceUpdate();
   }
   torest = () => {
-    console.log('torestclick : id = %d', this.id);
     this.forceUpdate();
   }
   render() {
     this.localstorageload();
-    const tolistitems = this.todonumarr.map((v_, k_) => <ToListItem key={k_} id={k_} millisec={v_} onСheck={this.docheck} onRemove={this.torem}/>);
-    const dolistitems = this.todonumarr.map((v_, k_) => <DoListItem key={k_} id={k_} millisec={v_} onRestore={this.torest}/>);
+    const tolistitems = this.todotypearr.map((v_, k_) => v_==1?(<ToListItem key={k_} id={k_} millisec={this.todonumarr[k_]} onСheck={this.docheck} onRemove={this.torem}/>):null);
+    const dolistitems = this.todotypearr.map((v_, k_) => v_==-1?(<DoListItem key={k_} id={k_} millisec={this.todonumarr[k_]} onRestore={this.torest}/>):null);
     return (
       <div className={st.maindiv}>
         <ul className={st.ul}>
