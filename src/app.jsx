@@ -62,12 +62,13 @@ class ToListItem extends React.Component {
   torem = () => {
     console.log('toremclick : id = %d', this.id);
     this.localstorageload();
-    //this.todonumarr.splice(this.id, 1);
-    //this.todotypearr.splice(this.id, 1);
-    //this.todotextarr.splice(this.id, 1);
-    //this.tododescarr.splice(this.id, 1);
 
-    this.todotypearr[this.id] = -1;
+    this.todonumarr.splice(this.id, 1);
+    this.todotypearr.splice(this.id, 1);
+    this.todotextarr.splice(this.id, 1);
+    this.tododescarr.splice(this.id, 1);
+
+    //this.todotypearr[this.id] = -1;
 
     this.localstoragesave();
     return this.props.onRemove(this.id);
@@ -118,7 +119,6 @@ class DoListItem extends React.Component {
     this.localstorageload();
     this.todotypearr[this.id] = 1;
     this.localstoragesave();
-    this.forceUpdate();
     return this.props.onRestore(this.id);
   }
   render() {
@@ -175,8 +175,9 @@ class ToDoList extends React.Component {
   }
   render() {
     this.localstorageload();
-    const tolistitems = this.todotypearr.map((v_, k_) => v_==1&&v_!=-1?(<ToListItem key={k_} id={k_} millisec={this.todonumarr[k_]} onCheck={this.docheck} onRemove={this.torem}/>):null);
-    const dolistitems = this.todotypearr.map((v_, k_) => v_==2&&v_!=-1?(<DoListItem key={k_} id={k_} millisec={this.todonumarr[k_]} onRestore={this.torest}/>):null);
+    const uuidV4 = require('uuid/v4');
+    const tolistitems = this.todotypearr.map((v_, k_) => v_==1&&v_!=-1?(<ToListItem key={uuidV4()} id={k_} millisec={this.todonumarr[k_]} onCheck={this.docheck} onRemove={this.torem}/>):null);
+    const dolistitems = this.todotypearr.map((v_, k_) => v_==2&&v_!=-1?(<DoListItem key={uuidV4()} id={k_} millisec={this.todonumarr[k_]} onRestore={this.torest}/>):null);
     return (
       <div className={st.maindiv}>
         <ul className={st.ul}>
