@@ -1,41 +1,68 @@
+let webpack = require('webpack');
+let path = require('path');
+let loaders = require('./webpack.loaders');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+let WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var webpack = require('webpack');
-var path = require('path');
-var loaders = require('./webpack.loaders');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+//loaders.push({
+//	test: /\.scss$/,
+//	loader: ExtractTextPlugin.extract({fallback: 'style-loader', use : 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?outputStyle=expanded'}),
+//	exclude: ['node_modules']
+//});
 
-// local css modules
 loaders.push({
-	test: /[\/\\]src[\/\\].*\.css/,
-	exclude: /(node_modules|bower_components|public\/)/,
-	loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
+	test: /\.css$/,
+	use: [
+		{ loader: "style-loader" },
+		{
+			loader: 'css-loader',
+			options: {
+				modules: true,
+				sourceMap: true,
+				importLoaders: 1,
+				localIdentName: '[path][name]__[local]--[hash:base64:5]'
+			}
+		},
+		{ loader: "postcss-loader" }
+	], exclude: ['node_modules']
 });
 
-// local scss modules
 loaders.push({
-	test: /[\/\\]src[\/\\].*\.scss/,
-	exclude: /(node_modules|bower_components|public\/)/,
-	loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass')
-});
-// global css files
-loaders.push({
-	test: /[\/\\](node_modules|global)[\/\\].*\.css$/,
-	loader: ExtractTextPlugin.extract('style', 'css')
+	test: /\.scss$/,
+	use: [
+		{ loader: "style-loader" },
+		{
+			loader: "css-loader",
+			options: {
+				modules: true,
+				sourceMap: true,
+				importLoaders: 1,
+				localIdentName: '[path][name]__[local]--[hash:base64:5]'
+			}
+		},
+		{
+			loader: "sass-loader",
+			options: {
+				sourceMap: true
+			}
+		}
+	], exclude: ['node_modules']
 });
 
 module.exports = {
 	entry: [
-		'./src/index.jsx'
+		'./src/index.jsx',
+		'./src/index.scss'
 	],
 	output: {
 		publicPath: '/',
 		path: path.join(__dirname, 'public'),
-		filename: '[chunkhash].js'
+		//filename: '[chunkhash].js'
+		filename: 'bundle.js'
 	},
 	resolve: {
-		extensions: ['', '.js', '.jsx']
+		extensions: ['.js', '.jsx']
 	},
 	module: {
 		loaders
@@ -50,19 +77,22 @@ module.exports = {
 		new webpack.optimize.UglifyJsPlugin({
 			compress: {
 				warnings: false,
-				screw_ie8: false, // IE8
+				screw_ie8: true,
 				drop_console: true,
 				drop_debugger: true
 			}
 		}),
-		new webpack.optimize.OccurenceOrderPlugin(),
-		new ExtractTextPlugin('[contenthash].css', {
-			allChunks: true
+		new webpack.optimize.OccurrenceOrderPlugin(),
+		new ExtractTextPlugin({
+				filename: 'style.css',
+				allChunks: true
 		}),
 		new HtmlWebpackPlugin({
 			template: './src/template.html',
-			title: 'Webpack App'
-		}),
-		new webpack.optimize.DedupePlugin()
+			files: {
+				css: ['style.css'],
+				js: ['bundle.js'],
+			}
+		})
 	]
 };
